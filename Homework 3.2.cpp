@@ -19,27 +19,29 @@ public:
             count++;
         }
     }
-    int get_element(int index) {
-        if (index <= 0 || index > size) {
-            throw std::exception("ERROR 2: Wrong index");
+    int get_element(unsigned int index) {
+        if (index >= size) {
+            throw std::exception("ERROR 2: Bad index");
         }
         else {
-            return array[index - 1];
+            return array[index];
         }
     }
     smart_array& operator=(const smart_array& created_smart_array)
     {
         if (&created_smart_array != this) {
+            delete[] array;
+            size = created_smart_array.size;
+            count = created_smart_array.count;
+            array = new int[size];
             for (int i = 0; i < size; i++) {
                 array[i] = created_smart_array.array[i];
             }
-            size = created_smart_array.size;
         }
         return *this;
     }
     ~smart_array() {
         delete[] array;
-        count = 0;
     }
 };
 
@@ -56,9 +58,10 @@ int main()
       new_array.add_element(34);
 
       arr = new_array;
+      std::cout << arr.get_element(0) << std::endl;
       std::cout << arr.get_element(1) << std::endl;
-      std::cout << arr.get_element(2) << std::endl;
-      std::cout << arr.get_element(3) << std::endl;
+      //std::cout << arr.get_element(2) << std::endl;
+      //arr.add_element(155);
     }
     catch (const std::exception& ex) {
       std::cout << ex.what() << std::endl;
